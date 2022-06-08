@@ -32,7 +32,7 @@ class LoginController extends Controller
     {
         if (Auth::user()->role_as == '1') //1=Admin
         {
-            return redirect('admin.dashboarda')->with('status', 'Welcome to Admin Dashboard');
+            return redirect('admin.dashboard')->with('status', 'Welcome to Admin Dashboard');
         } else if (Auth::user()->role_as == '0') //0=user
         {
             return redirect('/home')->with('status', 'Logged in Successful');
@@ -45,6 +45,7 @@ class LoginController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');

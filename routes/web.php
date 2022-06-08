@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\catagoryController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\userController;
 use App\Http\Controllers\Frontend\frontendController;
+use App\Http\Controllers\Frontend\CommentController;
+use Egulias\EmailValidator\Parser\CommentStrategy\CommentStrategy;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +23,18 @@ use App\Http\Controllers\Frontend\frontendController;
 |
 */
 
-Route::get('/', [frontendController::class, 'index']);
+Route::get('/', [frontendController::class, 'index'])->name('index');
 
 Route::get('tutorial/{category_slug}', [frontendController::class, 'viewCategoryPost']);
 Route::get('tutorial/{category_slug}/{post_slug}', [frontendController::class, 'viewPost']);
 
+//Comments
+Route::post('/comments', [CommentController::class, 'store']);
+Route::post('/delete-comment', [CommentController::class, 'destroy']);
+
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index']);
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/dashboard', [dashboardController::class, 'index']);
 
@@ -60,13 +66,13 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/delete-user/{user_id}', [userController::class, 'destroy']);
 });
 
-Route::get('/blog', [PostController::class, 'show'])->name('blog');
+// Route::get('/blog', [PostController::class, 'show'])->name('blog');
 
 Route::view('/about', 'about');
 Route::view('/contact', 'contact');
 
-Route::view('/add', 'blog.addBlog');
-Route::post('/add', [BlogController::class, 'addPost']);
+// Route::view('/add', 'blog.addBlog');
+// Route::post('/add', [BlogController::class, 'addPost']);
 
-Route::get('/updateBlog/{id}', [BlogController::class, 'updateBlog']);
-Route::post('/UpdateBlog', [BlogController::class, 'update'])->name('update');
+// Route::get('/updateBlog/{id}', [BlogController::class, 'updateBlog']);
+// Route::post('/UpdateBlog', [BlogController::class, 'update'])->name('update');

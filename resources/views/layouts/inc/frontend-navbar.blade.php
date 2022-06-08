@@ -26,8 +26,21 @@
                         </li>
                     @endforeach
 
-                </ul>
+                    @if (Auth::check())
+                        <li><a class="nav-link btn-danger" href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form"
+                                class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    @endif
 
+                    @guest
+                        <li><a class="lispan" href="{{ route('login') }}"><span
+                                    class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    @endguest
+                </ul>
             </div>
         </div>
     </nav>
