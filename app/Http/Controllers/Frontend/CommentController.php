@@ -40,17 +40,40 @@ class CommentController extends Controller
     public function destroy(Request $request)
     {
         if (Auth::check()) {
-            $comment = Comment::where('id', $request->comment_id)->where('user_id', Auth::user()->id)->first();
-            $comment->delete();
-            return response()->json([
-                'message' => 200,
-                'status' => 'Comment deleted successful'
-            ]);
+            $comment = Comment::where('id', $request->comment_id)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            if ($comment) {
+                $comment->delete();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Comment Deleted Succesfully'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Something Went Wrong'
+                ]);
+            }
         } else {
             return response()->json([
-                'message' => 401,
-                'status' => 'Login  to delete this comment'
+                'status' => 401,
+                'message' => 'Login To Delete This Comment'
             ]);
         }
+    }
+
+    public function show()
+    {
+        $comments = Comment::all();
+        return view('admin.comments.view', compact('comments'));
+    }
+
+    public function deleteComment($comment_id)
+    {
+        $comment = Comment::find($comment_id);
+        $comment->delete();
+        return redirect('admin/comments')->with('status', 'Comment Deleted Successful');
     }
 }

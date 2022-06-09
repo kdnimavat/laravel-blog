@@ -21,8 +21,8 @@
                         </div>
                     </div>
                     <div class="comment-area mt-4">
-                        @if (session('status'))
-                            <h6 class="alert alert-warning mb-3">{{ session('status') }}</h6>
+                        @if (session('message'))
+                            <h6 class="alert alert-warning mb-3">{{ session('message') }}</h6>
                         @endif
                         <div class="card card-body">
                             <h6 class="card-title">Leave a Comment</h6>
@@ -51,8 +51,8 @@
 
                                 @if (Auth::check() && Auth::id() == $comment->user_id)
                                     <div>
-                                        <button type="submit" value="{{ $comment->id }}}"
-                                            class="deleteComment btn btn-danger btn-sm me-2">Delete</button>
+                                        <button type="button" value="{{ $comment->id }}"
+                                            class="deleteComment btn btn-danger btn-sm float-end">Delete</button>
                                     </div>
                                 @endif
                             </div>
@@ -61,12 +61,13 @@
                         @endforelse
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 @endsection
 
-@section('script')
+@section('scripts')
     <script>
         $(document).ready(function() {
 
@@ -79,20 +80,21 @@
             $(document).on('click', '.deleteComment', function() {
                 if (confirm('Are you sure to delete this comment')) {
                     var thisClicked = $(this);
-                    var comment_id - thisClicked.val();
+                    var comment_id = thisClicked.val();
 
                     $.ajax({
                         type: 'POST',
-                        url: '/delete-comment',
-                        data {
+                        url: '/delete-comments',
+                        data: {
                             'comment_id': comment_id
-                        }
-                        success: function(res) {
-                            if (res.message = 200) {
+                        },
+                        // dataType: 'datatype',
+                        success: function(response) {
+                            if (response.status == 200) {
                                 thisClicked.closest('.comment-container').remove();
-                                alert(res.status);
+                                alert(response.message);
                             } else {
-                                alert(res.status);
+                                alert(response.message);
                             }
                         }
                     });

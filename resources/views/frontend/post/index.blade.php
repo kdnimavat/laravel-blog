@@ -24,7 +24,7 @@
                                 <span class="ms-3">Posted By: {{ $postitem->user->name }}</span>
                             </div>
                         </div>
-                        
+
                     @empty
                         <div class="card card-shadow mt-4">
                             <div class="card-body">

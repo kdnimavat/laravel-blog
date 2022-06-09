@@ -30,11 +30,15 @@ Route::get('tutorial/{category_slug}/{post_slug}', [frontendController::class, '
 
 //Comments
 Route::post('/comments', [CommentController::class, 'store']);
-Route::post('/delete-comment', [CommentController::class, 'destroy']);
+Route::post('delete-comments', [CommentController::class, 'destroy']);
+
+Route::get('/profile/{user_id}', [dashboardController::class, 'profileShow']);
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index']);
+
+
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/dashboard', [dashboardController::class, 'index']);
 
@@ -64,6 +68,9 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::put('/update-user/{user_id}', [userController::class, 'update']);
 
     Route::get('/delete-user/{user_id}', [userController::class, 'destroy']);
+
+    Route::get('/comments', [CommentController::class, 'show']);
+    Route::get('/delete-comments/{comment_id}', [CommentController::class, 'deleteComment']);
 });
 
 // Route::get('/blog', [PostController::class, 'show'])->name('blog');
